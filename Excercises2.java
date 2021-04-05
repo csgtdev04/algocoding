@@ -229,7 +229,7 @@ public class Excercises2 {
         
         return null;
     }
-
+    //Helper method
     private static boolean findDestination(List<List<String>> itenary, String letter_to_find) {
         for(int i = 0; i < itenary.size(); i++) {
             if(itenary.get(i).get(0).equals(letter_to_find)) {
