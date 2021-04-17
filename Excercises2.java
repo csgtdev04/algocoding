@@ -33,8 +33,44 @@ public class Excercises2 {
         System.out.println("Is perfect number: " + isPerfectNumber(num1));
 
         // Problem: 18
-        List<List<String>> list = Arrays.asList(Arrays.asList("London", "New York"), Arrays.asList("New York", "Lima"), Arrays.asList("Lima", "Sao Paulo"));
+        List<List<String>> list = Arrays.asList(Arrays.asList("London", "New York"), Arrays.asList("New York", "Lima"),
+                Arrays.asList("Lima", "Sao Paulo"));
         System.out.println("Get vacation destination: " + getVacationDestination(list));
+
+        // Problem: 19
+        int[] nums1 = { 2, 3, 5, 6, 3 };
+        System.out.println("Update Array: " + Arrays.toString(updateArray(nums1)));
+
+        // Problem: 20
+        String[] words1 = { "a", "b", "c" };
+        String[] words2 = { "a", "b", "d" };
+        System.out.println("Compare strings (in array): " + checkStrings(words1, words2));
+
+        // Problem: 21
+        int num2 = 38;
+        System.out.println("Is magical number: " + isMagicalNumber(num2));
+
+        // Problem: 22
+        String typed = "timmm";
+        String name = "timmy";
+        System.out.println("Is word contained: " + getIsWordContained(typed, name));
+
+        // Problem: 23
+        int[] nums3 = { 1, 2, 3, 4 };
+        System.out.println("Get one fourth number: " + getOneFourth(nums3));
+
+        // Problem: 24
+        String s = "Aabb";
+        System.out.println("Get acceptable string: " + getAcceptableString(s));
+
+        // Problem: 25
+        int candies = 3;
+        int exchange = 4;
+        System.out.println("Max Candies: " + getMaxCandies(candies, exchange));
+
+        // Problem: 26
+        int[] nums2 = { 4, 2, 9, 10, 3 };
+        System.out.println("Smaller than array: " + Arrays.toString(getSmallerThan(nums2)));
     }
 
     public static int getMaxSumLessThanK(int[] nums, int k) {
@@ -214,28 +250,206 @@ public class Excercises2 {
         // departing city and the arriving city respectively. Return the destination
         // city.
 
-        //flights = [["A", "B"], ["B", "C"]], return "C".
-        //flights = [["A", "B"], ["C", "D"], ["B", "C"]], return "D".
+        // flights = [["A", "B"], ["B", "C"]], return "C".
+        // flights = [["A", "B"], ["C", "D"], ["B", "C"]], return "D".
 
-        //Brute Force
-        for(int i = 0; i < itenary.size(); i++) {
+        // Brute Force
+        for (int i = 0; i < itenary.size(); i++) {
             String letter_to_find = itenary.get(i).get(1);
             boolean found = findDestination(itenary, letter_to_find);
-            if(!found) {
+            if (!found) {
                 return letter_to_find;
             }
         }
-        //Can also use set difference (add all index 1 to set then subtract index 0 that are common - see leetcode.)
-        
+        // Can also use set difference (add all index 1 to set then subtract index 0
+        // that are common - see leetcode.)
+
         return null;
     }
-    //Helper method
+
+    // Helper method
     private static boolean findDestination(List<List<String>> itenary, String letter_to_find) {
-        for(int i = 0; i < itenary.size(); i++) {
-            if(itenary.get(i).get(0).equals(letter_to_find)) {
+        for (int i = 0; i < itenary.size(); i++) {
+            if (itenary.get(i).get(0).equals(letter_to_find)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static int[] updateArray(int[] nums) {
+        // Given an integer array, nums, replace each element with the largest value
+        // that occurs to the right of it and return the array.
+        // Note: The rightmost element should be replaced with -1.
+
+        // nums = [5, 2, 3], return [3, 3, -1].
+        // nums = [10, 2, 5, 8, 9], return [9,9,9,9,-1].
+        // nums = [2, 3, 5, 6, 3], return [6, 6, 6, 3, -1]
+
+        int max = nums[nums.length - 1];
+        nums[nums.length - 1] = -1;
+
+        for (int i = nums.length - 2; i >= 0; i--) {
+            int temp = nums[i];
+            nums[i] = max;
+            if (temp > max) {
+                max = temp;
+            }
+        }
+
+        return nums;
+    }
+
+    public static boolean checkStrings(String[] a, String[] b) {
+        // Given two string arrays, word1 and word2, return whether or not the two
+        // arrays represent the same string.
+
+        StringBuilder sba = new StringBuilder();
+        StringBuilder sbb = new StringBuilder();
+
+        for (String word : a) {
+            sba.append(word);
+        }
+
+        for (String word : b) {
+            sbb.append(word);
+        }
+
+        return sba.toString().equals(sbb.toString());
+
+    }
+
+    public static boolean isMagicalNumber(int num) {
+        // Given a k-digit integer, num, return whether or not the number if magical.
+        // Note: A magical numbers is a number in which the the sum of all its digits
+        // raised to the kth power sum to the number itself.
+
+        int temp = num;
+        int power = 0;
+        while (temp > 0) {
+            power++;
+            temp /= 10;
+        }
+
+        int sum = 0;
+        for (int i = num; i > 0; i /= 10) {
+            int curr = i % 10;
+            sum += Math.pow(curr, power);
+        }
+
+        return sum == num;
+    }
+
+    public static boolean getIsWordContained(String typed, String name) {
+        // You are typing on a broken keyboard trying to spell your friend’s name. Since
+        // the keyboard is broken, sometimes when you press a key the key is typed one
+        // or more times. Given a string typed and a string namereturn whether or not
+        // you’ve successfully typed your friend’s name even though certain keys might
+        // be repeated.
+        // Note: Both strings will only contain lowercase alphabetical characters.
+
+        return typed.contains(name);
+
+    }
+
+    public static int getOneFourth(int[] nums) {
+        int greater_than = nums.length / 4;
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        int ans = -1;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            int key = entry.getKey();
+            int value = entry.getValue();
+            if (value > greater_than) {
+                ans = key;
+            }
+        }
+
+        return ans;
+    }
+
+    public static String getAcceptableString(String str) {
+        // Given a string, s, make it acceptable. An acceptable string is a string that
+        // contains no two adjacent characters that are the same with one letter being
+        // capitalized and the other being lowercased.
+        // Note: An empty string is acceptable and only one distinct answer will exist.
+
+        StringBuilder sb = new StringBuilder();
+
+        int asc_curr = -1;
+        int asc_next = -1;
+
+        for (int i = 0; i < str.length() - 1; i++) {
+            char curr = str.charAt(i);
+            char next = str.charAt(i + 1);
+            asc_curr = curr; // converts to ascii value
+            asc_next = next; // converts to ascii value
+
+            // asc_curr upper case, asc_next lower case
+            if ((asc_curr > 64 && asc_curr < 91) && (asc_next > 96 && asc_next < 123)) {
+                i++;
+                continue;
+            }
+
+            // asc_curr lower case, asc_next upper case
+            if ((asc_next > 64 && asc_next < 91) && (asc_curr > 96 && asc_curr < 123)) {
+                i++;
+                continue;
+            }
+            sb.append(curr); // append if 'acceptable' letter
+        }
+        asc_next = str.charAt(str.length() - 1);
+
+        // Since stopped for loop on second to last element, compare 2nd to last and
+        // last char after forloop
+        if (!((asc_curr > 64 && asc_curr < 91) && (asc_next > 96 && asc_next < 123)
+                || (asc_next > 64 && asc_next < 91) && (asc_curr > 96 && asc_curr < 123))) {
+            sb.append(str.charAt(str.length() - 1));
+        }
+
+        return sb.toString();
+    }
+
+    public static int getMaxCandies(int candies, int exchange) {
+        // You are given a certain number of candies and an exchange rate. For every
+        // exchange number of candy wrappers that you trade in, you receive an
+        // additional candy. Return the maximum number of candies that you can eat.
+
+        int temp = candies;
+        int extra = 0;
+        // c = 10 e = 3
+        while (temp > 0) {
+            temp -= exchange;
+            if (temp < 0) {
+                break;
+            }
+            extra++;
+        }
+        return candies += extra;
+    }
+
+    public static int[] getSmallerThan(int[] nums) {
+        // Given an integer array, nums, for each nums[i] you need to find the number of
+        // elements that are strictly smaller than it. Do this for all values in the
+        // array and return the result in an array.
+        int[] res = new int[nums.length];
+
+        int counter = 0;
+        for (int i = 0; i < nums.length; i++) {
+            counter = 0;
+            for (int j = 0; j < nums.length; j++) {
+                if (i == j)
+                    continue;
+                if (nums[j] < nums[i]) {
+                    counter++;
+                }
+            }
+            res[i] = counter;
+        }
+        return res;
     }
 }
